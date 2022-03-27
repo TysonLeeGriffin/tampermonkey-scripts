@@ -1,4 +1,6 @@
 // ==UserScript==
+// UserScript Code for listing out current SHift Codes for Wonderlands and Borderlands on the gearbox rewards site.
+// Set script update at https://github.com/TysonLeeGriffin/tampermonkey-scripts/blob/main/scripts/shiftCodes.js for updates
 // @name         Active Shift Codes updates
 // @namespace    http://tampermonkey.net/
 // @version      1.0
@@ -11,41 +13,15 @@
 
 (function() {
     'use strict';
+    //todo feature: Add checkboxes and local storage for used codes
 
     const wonderlandsPurple = '#ff00ff';
     const borderlandsYellow = '#ffea02';
 
-    const codeList = {
-        wonderlands: [
-            [new Date('Febuary 28 2022'), 'EXPIRED-NOT-REAL-HAHA-JOKE', 'key'],
-            [new Date('March, 28, 2022'), 'B36T3-KSZ6F-K5TKK-JJ3B3-B6B3J', 'Skeleton Key'],
-            [new Date('March 31, 2022'), 'JBRTT-BZH6F-CC3W5-3TTTB-XB9HH', 'Skeleton Key'],
-        ],
-        borderlands3: [
-            [new Date('June, 01, 2099'),'CZ5JT-HFH99-KXKRZ-6BTJJ-BS5WB', 'Saurian Synth Head'],
-            [new Date('June, 01, 2099'),'CSWJT-FS9H9-W6KFS-R3TTT-RFCHR','1 diamond key'],
-            [new Date('June, 01, 2099'),'C95TB-3RJZ9-K6WFH-R3BTJ-RJJSJ','3 golden keys'],
-            [new Date('June, 01, 2099'),'Z65B3-JCXX6-5JXW3-3B33J-9SWT6','3 golden keys'],
-            [new Date('June, 01, 2099'),'ZRWBJ-ST6XR-CBFKT-JT3J3-FRXJ5','3 golden keys'],
-            [new Date('June, 01, 2099'),'9XCBT-WBXFR-5TRWJ-JJJ33-TX53Z','3 golden keys'],
-            [new Date('June, 01, 2099'),'ZFKJ3-TT6FF-KTFKT-T3JJT-JWX36','1 golden key'],
-            [new Date('June, 01, 2099'),'HXKBT-XJ6FR-WBRKJ-J3TTB-RSBHR','1 golden key'],
-            [new Date('June, 01, 2099'),'ZFKJ3-TT3BB-JTBJT-T3JJT-JWX9H','3 golden keys'],
-            [new Date('June, 01, 2099'),'CSKBB-SZTSZ-WXWXZ-FJTTB-JWR3R','3 Golden Keys'],
-            [new Date('June, 01, 2099'),'59WBB-FSWR9-KFC69-R3B3B-3FKST','Mercenary Day cosmetics'],
-            [new Date('June, 01, 2099'),'CZ5BB-3BWZZ-W65FS-FJ33B-ZK3K5','Few Golden Keys'],
-            [new Date('June, 01, 2099'),'WCCJB-JWJRF-FSB63-JJJ3T-WWSSJ','5 Golden Keys'],
-            [new Date('June, 01, 2099'),'ZRWBJ-ST6XR-CBFKT-JT3J3-FRXJ5','1 Diamond Key'],
-            [new Date('June, 01, 2099'),'Z65B3-JCXX6-5JXW3-3B33J-9SWT6','1 Diamond Key'],
-            [new Date('June, 01, 2099'),'HXKBT-XJ6FR-WBRKJ-J3TTB-RSBHR','1 Diamond Key'],
-            [new Date('June, 01, 2099'),'9XCBT-WBXFR-5TRWJ-JJJ33-TX53Z','1 Diamond Key'],
-            [new Date('June, 01, 2099'),'ZFKJ3-TT6FF-KTFKT-T3JJT-JWX36','1 Diamond Key'],
-        ],
-    };
-
     function replaceDiv (target, content = '', codeList = []) {
-        // test target
+        //todo test target
         let today = new Date();
+        //todo change ul for div's and check boxes for used codes
         if(codeList.length){
             let list = codeList.filter(code => new Date(code[0]) >= today);
             content += `<ul>`;
@@ -65,6 +41,7 @@
     function handleClick(element) {
         const code = element.getAttribute('value');
         const codeInput = document.getElementById('shift_code_input');
+        //todo update li styling
         //element.setAttribute('style', `background-color: ${wonderlandsPurple}`);
         codeInput.value = code;
     }
@@ -75,6 +52,8 @@
     };
 
     async function updateWebpageList() {
+        //todo create custome database and api for JSON
+        //fast inplemented JSON page 
         const jsonURL = 'https://json.extendsclass.com/bin/5889041b3fa4';
         let response = await fetch(jsonURL);
         let data = await response.text();
