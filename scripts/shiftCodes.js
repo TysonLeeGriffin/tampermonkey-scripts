@@ -1,6 +1,4 @@
 // ==UserScript==
-// UserScript Code for listing out current SHift Codes for Wonderlands and Borderlands on the gearbox rewards site.
-// Set script update at https://github.com/TysonLeeGriffin/tampermonkey-scripts/blob/main/scripts/shiftCodes.js for updates
 // @name         Active Shift Codes updates
 // @namespace    http://tampermonkey.net/
 // @version      1.0
@@ -14,24 +12,33 @@
 (function() {
     'use strict';
     //todo feature: Add checkboxes and local storage for used codes
-    // Dynamic JSON list: https://shift.orcicorn.com/index.json
+    //todo update JSON Storage with Dynamic JSON list
+    // Dynamic JSON list of Active SHiFT Codes: https://shift.orcicorn.com/shift-code/index.json
+
+    // #region TESTING
+    // #endregion
+
 
     const wonderlandsPurple = '#ff00ff';
     const borderlandsYellow = '#ffea02';
-
-    const styles =`.list-item {border: 1px black solid;}`;
+    const godfallGold = '#f1c068';
 
     function replaceDiv (target, content = '', codeList = []) {
-        //todo test target
+
         let today = new Date();
-        //todo change ul for div's and check boxes for used codes
+
         if(codeList.length){
-            let list = codeList.filter(code => new Date(code[0]) >= today);
-            content += `<div>`;
-            for(let i = 0; i < list.length; i++){
-                content += `<div class="list-item" style="cursor: pointer" value="${list[i][1]}">${list[i][1]} - ${list[i][2]}</div>`;
+            content = '';
+            let list = codeList.filter(code => new Date(code.expires) >= today || code.expires == 'Unknown');
+            if(list.length){
+                content += `<div>`;
+                for(let i = 0; i < list.length; i++){
+                    content += `<div class="list-item" style="cursor: pointer" value="${list[i].code}">${list[i].code} - ${list[i].reward}</div>`;
+                }
+                content += `</div>`;
+            }else {
+                content += `<div>NO CODES FOUND</div>`;
             }
-            content += `</div>`;
         }
         target.innerHTML = content;
     };
@@ -44,8 +51,6 @@
     function handleClick(element) {
         const code = element.getAttribute('value');
         const codeInput = document.getElementById('shift_code_input');
-        //todo update li styling
-        //element.setAttribute('style', `background-color: ${wonderlandsPurple}`);
         codeInput.value = code;
     }
 
@@ -55,27 +60,52 @@
     };
 
     async function updateWebpageList() {
-        //todo create custome database and api for JSON
-        //fast inplemented JSON page 
-        const jsonURL = 'https://json.extendsclass.com/bin/5889041b3fa4';
+        // Extendsclass.com JSON page
+        const jsonURL = 'https://json.extendsclass.com/bin/a071429ea095';
+
+        // Parse JSON into an OBJ
         let response = await fetch(jsonURL);
         let data = await response.text();
-        const listOfCodes = JSON.parse(data);
+        const obj = JSON.parse(data);
 
-        updateCodeList('wonderland-list', listOfCodes.wonderlands);
-        updateCodeList('borderlands3-list', listOfCodes.borderlands3);
+        //Seperate OBJ in Array per Game
+        const wonderlandsCodes = obj.codes.filter(code => code.game == 'Wonderlands');
+        const borderlands3Codes = obj.codes.filter(code => code.game == 'Borderlands 3');
+        const borderlands2Codes = obj.codes.filter(code => code.game == 'Borderlands 2');
+        const borderlandsPreSequelCodes = obj.codes.filter(code => code.game == 'Borderlands: Pre-Sequel');
+        const borderlands1Codes = obj.codes.filter(code => code.game == 'Borderlands 1');
+        const godfallCodes = obj.codes.filter(code => code.game == 'Godfall');
+
+        updateCodeList('wonderland-list', wonderlandsCodes);
+        updateCodeList('borderlands3-list', borderlands3Codes);
+        updateCodeList('borderlands2-list', borderlands2Codes);
+        updateCodeList('borderlandsPre-list', borderlandsPreSequelCodes);
+        updateCodeList('borderlands1-list', borderlands1Codes);
+        updateCodeList('godfall-list', godfallCodes);
+
+
         setClickListener();
+
     };
 
     (function editSite(){
         // replacing the main section to set up for add the SHiFT code for Wonderlands & Borderlands3
+        const styles =`.list-item {border: 1px #2C2C2C solid;padding: 5px;margin-top: 2px} .list-title {margin-bottom: 25px}`;
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = styles;
+        document.head.appendChild(styleSheet);
+
         const targetDiv = document.getElementsByClassName("sh_code_redemption_instructions_label")[0];
 
         const replaceContent = `
     <div><p>SHiFT Codes offer in-game rewards for a variety of Gearbox games.</p></div>
     <div><h2 style="color:white">Current list of SHiFT Codes</h2></div>
-    <div><p style="color: ${wonderlandsPurple}; font-size: 18px">Tiny Tina's Wonderland</p><div id="wonderland-list">The list is loading</div></div>
-    <div><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands 3</p><div id="borderlands3-list">The list is loading</div></div>
+    <div class="list-title"><p style="color: ${wonderlandsPurple}; font-size: 18px">Tiny Tina's Wonderland</p><div id="wonderland-list">NO CODES FOUND</div></div>
+    <div class="list-title"><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands 3</p><div id="borderlands3-list">NO CODES FOUND</div></div>
+    <div class="list-title"><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands 2</p><div id="borderlands2-list">NO CODES FOUND</div></div>
+    <div class="list-title"><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands: The Pre-Squel</p><div id="borderlandsPre-list">NO CODES FOUND</div></div>
+    <div class="list-title"><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands</p><div id="borderlands1-list">NO CODES FOUND</div></div>
+    <div class="list-title"><p style="color: ${godfallGold}; font-size: 18px">GodFall</p><div id="godfall-list">NO CODES FOUND</div></div>
     `;
         replaceDiv(targetDiv, replaceContent);
         // moving on to updating the code list now
