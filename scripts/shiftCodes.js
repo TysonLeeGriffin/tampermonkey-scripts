@@ -14,9 +14,12 @@
 (function() {
     'use strict';
     //todo feature: Add checkboxes and local storage for used codes
+    // Dynamic JSON list: https://shift.orcicorn.com/index.json
 
     const wonderlandsPurple = '#ff00ff';
     const borderlandsYellow = '#ffea02';
+
+    const styles =`.list-item {border: 1px black solid;}`;
 
     function replaceDiv (target, content = '', codeList = []) {
         //todo test target
@@ -24,11 +27,11 @@
         //todo change ul for div's and check boxes for used codes
         if(codeList.length){
             let list = codeList.filter(code => new Date(code[0]) >= today);
-            content += `<ul>`;
+            content += `<div>`;
             for(let i = 0; i < list.length; i++){
-                content += `<li class="list-li" style="cursor: pointer" value="${list[i][1]}">${list[i][1]} - ${list[i][2]}</li>`;
+                content += `<div class="list-item" style="cursor: pointer" value="${list[i][1]}">${list[i][1]} - ${list[i][2]}</div>`;
             }
-            content += `<ul>`;
+            content += `</div>`;
         }
         target.innerHTML = content;
     };
@@ -47,7 +50,7 @@
     }
 
     function setClickListener() {
-        const codeListItems = document.querySelectorAll('.list-li');
+        const codeListItems = document.querySelectorAll('.list-item');
         codeListItems.forEach(item => {item.addEventListener('click', function clickIt (event) {handleClick(this)})});
     };
 
