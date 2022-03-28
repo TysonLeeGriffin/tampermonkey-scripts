@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Active Shift Codes updates
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      2.0
 // @description  Active Shift Code list for Wonderlands & Borderlands 3
 // @author       Griffin
 // @match        https://shift.gearboxsoftware.com/rewards
@@ -11,12 +11,6 @@
 
 (function() {
     'use strict';
-    //todo update JSON Storage with Dynamic JSON list
-    // Dynamic JSON list of Active SHiFT Codes: https://shift.orcicorn.com/shift-code/index.json
-
-    // #region TESTING
-    // #endregion
-
 
     const wonderlandsPurple = '#ff00ff';
     const borderlandsYellow = '#ffea02';
