@@ -32,6 +32,7 @@
         .keyList-wrapper {margin-top: 10px;}
         details {user-select: none;}
         summary {display: flex; cursor: pointer; font-size: 18px}
+        .title {text-shadow: -2px 0 #1c1c1c, 0 2px black, 2px 0 #1c1c1c, 0 -2px #1c1c1c; font-weight: bold;}
         summary::-webkit-details-marker {display: none;}
         details > summary span.icon {width: 24px; height: 24px; transition: all 0.3s; margin-right: 10px; transform: rotate(-45deg)}
         details[open] summary span.icon {transform: rotate(50deg);}
@@ -39,12 +40,12 @@
         replaceContent : `
 <div><p>SHiFT Codes offer in-game rewards for a variety of Gearbox games.</p></div>
 <div><h2 style="color:white">Current list of SHiFT Codes</h2></div>
-<details class="list-title"><summary style="color: ${htmlColors.purple};"><span class="icon">🔑</span>Tiny Tina's Wonderland</summary><div id="wonderland-list">NO CODES FOUND</div></details>
-<details class="list-title"><summary style="color: ${htmlColors.yellow};"><span class="icon">🔑</span>Borderlands 3</summary><div id="borderlands3-list">NO CODES FOUND</div></details>
-<details class="list-title"><summary style="color: ${htmlColors.yellow};"><span class="icon">🔑</span>Borderlands 2</summary><div id="borderlands2-list">NO CODES FOUND</div></details>
-<details class="list-title"><summary style="color: ${htmlColors.yellow};"><span class="icon">🔑</span>Borderlands: The Pre-Squel</summary><div id="borderlandsPre-list">NO CODES FOUND</div></details>
-<details class="list-title"><summary style="color: ${htmlColors.yellow};"><span class="icon">🔑</span>Borderlands</summary><div id="borderlands1-list">NO CODES FOUND</div></details>
-<details class="list-title"><summary style="color: ${htmlColors.golden};"><span class="icon">🔑</span>GodFall</summary><div id="godfall-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${htmlColors.purple};"><span class="icon">🔑</span><span class="title">Tiny Tina's Wonderland</span></summary><div id="wonderland-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${htmlColors.yellow};"><span class="icon">🔑</span><span class="title">Borderlands 3</span></summary><div id="borderlands3-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${htmlColors.yellow};"><span class="icon">🔑</span><span class="title">Borderlands 2</span></summary><div id="borderlands2-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${htmlColors.yellow};"><span class="icon">🔑</span><span class="title">Borderlands: The Pre-Squel</span></summary><div id="borderlandsPre-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${htmlColors.yellow};"><span class="icon">🔑</span><span class="title">Borderlands</span></summary><div id="borderlands1-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${htmlColors.golden};"><span class="icon">🔑</span><span class="title">GodFall</span></summary><div id="godfall-list">NO CODES FOUND</div></details>
     `,
         abandonHope : `<div class="keyList-wrapper"><div class="list-item"><span>🕱<span><span>🕱<span><span>🕱<span> ABANDON HOPE ALL YE WHO ENTER <span>🕱<span><span>🕱<span><span>🕱<span></div></div>`,
 
