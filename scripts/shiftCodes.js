@@ -11,7 +11,6 @@
 
 (function() {
     'use strict';
-    //todo feature: Add checkboxes and local storage for used codes
     //todo update JSON Storage with Dynamic JSON list
     // Dynamic JSON list of Active SHiFT Codes: https://shift.orcicorn.com/shift-code/index.json
 
@@ -31,13 +30,13 @@
             content = '';
             let list = codeList.filter(code => new Date(code.expires) >= today || code.expires == 'Unknown');
             if(list.length){
-                content += `<div>`;
+                content += `<div class="keyList-wrapper">`;
                 for(let i = 0; i < list.length; i++){
                     content += `<div class="list-item" style="cursor: pointer" value="${list[i].code}">${list[i].code} - ${list[i].reward}</div>`;
                 }
                 content += `</div>`;
             }else {
-                content += `<div>NO CODES FOUND</div>`;
+                content += `<div class="keyList-wrapper"><div class="list-item"><span>🕱<span><span>🕱<span><span>🕱<span> ABANDON HOPE ALL YE WHO ENTER <span>🕱<span><span>🕱<span><span>🕱<span></div></div>`;
             }
         }
         target.innerHTML = content;
@@ -90,7 +89,16 @@
 
     (function editSite(){
         // replacing the main section to set up for add the SHiFT code for Wonderlands & Borderlands3
-        const styles =`.list-item {border: 1px #2C2C2C solid;padding: 5px;margin-top: 2px} .list-title {margin-bottom: 25px}`;
+        const styles =`
+        .list-item {border: 1px #2C2C2C solid;padding: 5px;margin-top: 8px;}
+        .list-title {margin-bottom: 25px;}
+        .keyList-wrapper {margin-top: 10px;}
+        details {user-select: none;}
+        summary {display: flex; cursor: pointer; font-size: 18px}
+        summary::-webkit-details-marker {display: none;}
+        details > summary span.icon {width: 24px; height: 24px; transition: all 0.3s; margin-right: 10px; transform: rotate(-45deg)}
+        details[open] summary span.icon {transform: rotate(50deg);}
+        `;
         const styleSheet = document.createElement("style");
         styleSheet.innerText = styles;
         document.head.appendChild(styleSheet);
@@ -98,14 +106,14 @@
         const targetDiv = document.getElementsByClassName("sh_code_redemption_instructions_label")[0];
 
         const replaceContent = `
-    <div><p>SHiFT Codes offer in-game rewards for a variety of Gearbox games.</p></div>
-    <div><h2 style="color:white">Current list of SHiFT Codes</h2></div>
-    <div class="list-title"><p style="color: ${wonderlandsPurple}; font-size: 18px">Tiny Tina's Wonderland</p><div id="wonderland-list">NO CODES FOUND</div></div>
-    <div class="list-title"><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands 3</p><div id="borderlands3-list">NO CODES FOUND</div></div>
-    <div class="list-title"><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands 2</p><div id="borderlands2-list">NO CODES FOUND</div></div>
-    <div class="list-title"><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands: The Pre-Squel</p><div id="borderlandsPre-list">NO CODES FOUND</div></div>
-    <div class="list-title"><p style="color: ${borderlandsYellow}; font-size: 18px">Borderlands</p><div id="borderlands1-list">NO CODES FOUND</div></div>
-    <div class="list-title"><p style="color: ${godfallGold}; font-size: 18px">GodFall</p><div id="godfall-list">NO CODES FOUND</div></div>
+<div><p>SHiFT Codes offer in-game rewards for a variety of Gearbox games.</p></div>
+<div><h2 style="color:white">Current list of SHiFT Codes</h2></div>
+<details class="list-title"><summary style="color: ${wonderlandsPurple};"><span class="icon">🔑</span>Tiny Tina's Wonderland</summary><div id="wonderland-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${borderlandsYellow};"><span class="icon">🔑</span>Borderlands 3</summary><div id="borderlands3-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${borderlandsYellow};"><span class="icon">🔑</span>Borderlands 2</summary><div id="borderlands2-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${borderlandsYellow};"><span class="icon">🔑</span>Borderlands: The Pre-Squel</summary><div id="borderlandsPre-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${borderlandsYellow};"><span class="icon">🔑</span>Borderlands</summary><div id="borderlands1-list">NO CODES FOUND</div></details>
+<details class="list-title"><summary style="color: ${godfallGold};"><span class="icon">🔑</span>GodFall</summary><div id="godfall-list">NO CODES FOUND</div></details>
     `;
         replaceDiv(targetDiv, replaceContent);
         // moving on to updating the code list now
